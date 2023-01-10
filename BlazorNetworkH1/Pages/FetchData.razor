@@ -1,15 +1,15 @@
 ﻿@page "/fetchdata"
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Breakfast</PageTitle>
 
 @using BlazorNetworkH1.Data
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<h1>What to eat and when</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>Food food food Friday H1 last day.</p>
 
-@if (forecasts == null)
+@if (foodList == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,31 +18,48 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Id</th>
+                <th>Item</th>
+                <th>Amount</th>
+                <th>Price</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (Food food in foodList)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@food.Id<button @onclick="() => RemoveFood(food.Id)">-</button></td>
+                    <td>@food.Item</td>
+                    <td>@food.Amount</td>
+                    <td>@food.Price.ToString("0.00")</td>
                 </tr>
             }
+            <tr>
+                <td><button @onclick="AddItem">+</button></td>
+                <td><input @bind="food.Item" /></td>
+                <td><input @bind="food.Amount" /></td>
+                <td><input @bind="food.Price" /></td>
+            </tr>           
         </tbody>
     </table>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    Food food = new();
+    List<Food> foodList = new SQL().GetFood();
 
-    protected override async Task OnInitializedAsync()
+    void AddItem()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        new SQL().CreateFood(food);
+        food = new();
+        foodList = new SQL().GetFood();
+    }
+
+    void RemoveFood(int id)
+    {
+        new SQL().DeleteFood(id);
+        food = new();
+        foodList = new SQL().GetFood();
+
     }
 }

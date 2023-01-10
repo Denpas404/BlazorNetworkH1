@@ -12,3 +12,5 @@ Amount INT,
 Price DECIMAL(10,2)
 )
 
+INSERT INTO Food VALUES ('Donut', 10, 1.99)
+
