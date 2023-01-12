@@ -5,7 +5,12 @@ namespace BlazorNetworkH1.Data
 {
     public class SQL
     {
-        SqlConnection sqlConnection = new("Data Source=.;Initial Catalog=BreakfastH1;Integrated Security=True;");
+        SqlConnection sqlConnection = new(
+            "Data Source=192.168.2.2;" +
+            "Initial Catalog=BreakfastH1;" +
+            "User Id=sa;" +
+            "Password=Passw0rd");
+        //SqlConnection sqlConnection = new("Data Source=.;Initial Catalog=BreakfastH1;Integrated Security=True;");
 
         public bool CreateFood(Food f)
         {
